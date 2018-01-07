@@ -24,12 +24,12 @@ namespace ToyRobotApp
 
                 try
                 {
-                    string[] command = readCommand.Split(' ');
+                    var command = readCommand.Split(' ');
 
                     switch (command[0].ToUpper())
                     {
                         case "PLACE":
-                            var newPosition = ValidateParams(command);
+                            var newPosition = GetNewPosition(command);
                             toyRobot.Place(newPosition);
                             break;
 
@@ -65,7 +65,13 @@ namespace ToyRobotApp
 
         }
 
-        private static RobotPosition ValidateParams(string[] command)
+        /// <summary>
+        /// Get the proposed new position for the place command. 
+        /// Does validation check as well 
+        /// </summary>
+        /// <param name="command">Command to place a toy robot</param>
+        /// <returns>Proposed position</returns>
+        private static RobotPosition GetNewPosition(string[] command)
         {
             if (command.Length < 2)
             {
@@ -82,7 +88,7 @@ namespace ToyRobotApp
             var x = int.Parse(parameters[0]);
             var y = int.Parse(parameters[1]);
             var f = parameters[2].ToUpper();
-            Direction direction = (Direction)Enum.Parse(typeof(Direction), f);
+            var direction = (Direction)Enum.Parse(typeof(Direction), f);
 
             var newPosition = new RobotPosition()
             {

@@ -7,9 +7,9 @@ namespace ToyRobotApp
         private RobotPosition robotPosition;
         private readonly int SQUARETABLETOPUNIT;
 
-        private const string ERROR_INVALIDPOSITION = "Invalid Position.";
-        private const string ERROR_INVALIDCOMMAND = "Invalid command.";
-        private const string ERROR_INVALIDMOVE = "Invalid Move.";
+        private const string INVALIDPOSITIONERROR = "Invalid Position.";
+        private const string INVALIDCOMMANDERROR = "Invalid command.";
+        private const string INVALIDMOVEERROR = "Invalid Move.";
 
         public ToyRobot(int squareTableTopUnit)
         {
@@ -24,7 +24,7 @@ namespace ToyRobotApp
             }
             else
             {
-                throw new System.Exception(ERROR_INVALIDPOSITION);
+                throw new System.Exception(INVALIDPOSITIONERROR);
             }
         }
 
@@ -32,7 +32,7 @@ namespace ToyRobotApp
         {
             if (!IsValidCommand())
             {
-                throw new System.Exception(ERROR_INVALIDCOMMAND);
+                throw new System.Exception(INVALIDCOMMANDERROR);
             }
 
             return robotPosition;
@@ -42,7 +42,7 @@ namespace ToyRobotApp
         {
             if (!IsValidCommand())
             {
-                throw new System.Exception(ERROR_INVALIDCOMMAND);
+                throw new System.Exception(INVALIDCOMMANDERROR);
             }
 
             var newPosition = ApplyMove();
@@ -53,7 +53,7 @@ namespace ToyRobotApp
             }
             else
             {
-                throw new System.Exception(ERROR_INVALIDMOVE);
+                throw new System.Exception(INVALIDMOVEERROR);
             }
         }        
 
@@ -61,7 +61,7 @@ namespace ToyRobotApp
         {
             if (!IsValidCommand())
             {
-                throw new System.Exception(ERROR_INVALIDCOMMAND);
+                throw new System.Exception(INVALIDCOMMANDERROR);
             }
 
             ApplyLeft();
@@ -71,7 +71,7 @@ namespace ToyRobotApp
         {
             if (!IsValidCommand())
             {
-                throw new System.Exception(ERROR_INVALIDCOMMAND);
+                throw new System.Exception(INVALIDCOMMANDERROR);
             }
 
             ApplyRight();
