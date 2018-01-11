@@ -119,21 +119,20 @@ namespace ToyRobotApp
         /// </summary>
         private void ApplyLeft()
         {
-            if (robotPosition.F == Direction.NORTH)
+            switch (robotPosition.F)
             {
-                robotPosition.F = Direction.WEST;
-            }
-            else if (robotPosition.F == Direction.SOUTH)
-            {
-                robotPosition.F = Direction.EAST;
-            }
-            else if (robotPosition.F == Direction.EAST)
-            {
-                robotPosition.F = Direction.NORTH;
-            }
-            else if (robotPosition.F == Direction.WEST)
-            {
-                robotPosition.F = Direction.SOUTH;
+                case Direction.NORTH:
+                    robotPosition.F = Direction.WEST;
+                    break;
+                case Direction.SOUTH:
+                    robotPosition.F = Direction.EAST;
+                    break;
+                case Direction.EAST:
+                    robotPosition.F = Direction.NORTH;
+                    break;
+                case Direction.WEST:
+                    robotPosition.F = Direction.SOUTH;
+                    break;
             }
         }
 
@@ -142,21 +141,20 @@ namespace ToyRobotApp
         /// </summary>
         private void ApplyRight()
         {
-            if (robotPosition.F == Direction.NORTH)
+            switch (robotPosition.F)
             {
-                robotPosition.F = Direction.EAST;
-            }
-            else if (robotPosition.F == Direction.SOUTH)
-            {
-                robotPosition.F = Direction.WEST;
-            }
-            else if (robotPosition.F == Direction.EAST)
-            {
-                robotPosition.F = Direction.SOUTH;
-            }
-            else if (robotPosition.F == Direction.WEST)
-            {
-                robotPosition.F = Direction.NORTH;
+                case Direction.NORTH:
+                    robotPosition.F = Direction.EAST;
+                    break;
+                case Direction.SOUTH:
+                    robotPosition.F = Direction.WEST;
+                    break;
+                case Direction.EAST:
+                    robotPosition.F = Direction.SOUTH;
+                    break;
+                case Direction.WEST:
+                    robotPosition.F = Direction.NORTH;
+                    break;
             }
         }
 
@@ -186,7 +184,7 @@ namespace ToyRobotApp
         /// <returns>Indicates a valid command (true/false)</returns>
         private bool IsValidCommand()
         {
-            return robotPosition == null ? false : true;
+            return robotPosition != null;
         }
 
         #endregion

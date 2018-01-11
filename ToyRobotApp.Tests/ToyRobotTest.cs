@@ -7,7 +7,7 @@ namespace ToyRobotApp.Tests
     public class ToyRobotTest
     {
         private const int BOUNDARYAREA = 5;
-        private IToyRobot CreateSut()
+        private static IToyRobot CreateSut()
         {
             return new ToyRobot(BOUNDARYAREA);
         }
@@ -17,16 +17,16 @@ namespace ToyRobotApp.Tests
         [Fact]
         public void Test_ValidationRule_OnlyPlaceCommandIsFirstValidCommand()
         {
-            IToyRobot toyRobot = CreateSut();
+            var toyRobot = CreateSut();
 
             Assert.Throws<Exception>(() => toyRobot.Move());
             Assert.Throws<Exception>(() => toyRobot.Left());
             Assert.Throws<Exception>(() => toyRobot.Right());
-            Assert.Throws<Exception>(() => toyRobot.Report());            
+            Assert.Throws<Exception>(() => toyRobot.Report());
             toyRobot.Place(new RobotPosition()
             {
-                X = 0, 
-                Y = 0, 
+                X = 0,
+                Y = 0,
                 F = Direction.NORTH
             });
         }
@@ -34,7 +34,7 @@ namespace ToyRobotApp.Tests
         [Fact]
         public void Test_ValidationRule_InvalidMovePreservesTheLastValidValue()
         {
-            IToyRobot toyRobot = CreateSut();
+            var toyRobot = CreateSut();
 
             toyRobot.Place(new RobotPosition()
             {
@@ -93,63 +93,75 @@ namespace ToyRobotApp.Tests
             Assert.Equal(x, currentPosition.X);
             Assert.Equal(y, currentPosition.Y);
             Assert.Equal(f, currentPosition.F);
-        }        
+        }
 
-        [Fact]
-        public void Test_MoveCommand_OneUnitInCurrentDirection()
+        [Theory]
+        [InlineData(1, 2, Direction.NORTH, 1, 3, Direction.NORTH)]
+        [InlineData(1, 2, Direction.SOUTH, 1, 1, Direction.SOUTH)]
+        [InlineData(1, 2, Direction.EAST, 2, 2, Direction.EAST)]
+        [InlineData(1, 2, Direction.WEST, 0, 2, Direction.WEST)]
+        public void Test_MoveCommand_OneUnitInCurrentDirection(int x1, int y1, Direction f1, int x2, int y2, Direction f2)
         {
             IToyRobot toyRobot = CreateSut();
 
             toyRobot.Place(new RobotPosition()
             {
-                X = 2,
-                Y = 3,
-                F = Direction.NORTH
+                X = x1,
+                Y = y1,
+                F = f1
             });
             toyRobot.Move();
             var currentPosition = toyRobot.Report();
 
-            Assert.Equal(2, currentPosition.X);
-            Assert.Equal(4, currentPosition.Y);
-            Assert.Equal(Direction.NORTH, currentPosition.F);
+            Assert.Equal(x2, currentPosition.X);
+            Assert.Equal(y2, currentPosition.Y);
+            Assert.Equal(f2, currentPosition.F);
         }
 
-        [Fact]
-        public void Test_LeftCommand_RotatesPerpendicularInLeftDirection()
+        [Theory]
+        [InlineData(0, BOUNDARYAREA, Direction.NORTH, Direction.WEST)]
+        [InlineData(0, BOUNDARYAREA, Direction.SOUTH, Direction.EAST)]
+        [InlineData(0, BOUNDARYAREA, Direction.EAST, Direction.NORTH)]
+        [InlineData(0, BOUNDARYAREA, Direction.WEST, Direction.SOUTH)]
+        public void Test_LeftCommand_RotatesPerpendicularInLeftDirection(int x, int y, Direction currentDirection, Direction expectedDirection)
         {
             IToyRobot toyRobot = CreateSut();
 
             toyRobot.Place(new RobotPosition()
             {
-                X = 2,
-                Y = 3,
-                F = Direction.NORTH
+                X = x,
+                Y = y,
+                F = currentDirection
             });
             toyRobot.Left();
             var currentPosition = toyRobot.Report();
 
-            Assert.Equal(2, currentPosition.X);
-            Assert.Equal(3, currentPosition.Y);
-            Assert.Equal(Direction.WEST, currentPosition.F);
+            Assert.Equal(x, currentPosition.X);
+            Assert.Equal(y, currentPosition.Y);
+            Assert.Equal(expectedDirection, currentPosition.F);
         }
 
-        [Fact]
-        public void Test_RightCommand_RotatesPerpendicularInRightDirection()
+        [Theory]
+        [InlineData(0, BOUNDARYAREA, Direction.NORTH, Direction.EAST)]
+        [InlineData(0, BOUNDARYAREA, Direction.SOUTH, Direction.WEST)]
+        [InlineData(0, BOUNDARYAREA, Direction.EAST, Direction.SOUTH)]
+        [InlineData(0, BOUNDARYAREA, Direction.WEST, Direction.NORTH)]
+        public void Test_RightCommand_RotatesPerpendicularInRightDirection(int x, int y, Direction currentDirection, Direction expectedDirection)
         {
             IToyRobot toyRobot = CreateSut();
 
             toyRobot.Place(new RobotPosition()
             {
-                X = 2,
-                Y = 3,
-                F = Direction.NORTH
+                X = x,
+                Y = y,
+                F = currentDirection
             });
             toyRobot.Right();
             var currentPosition = toyRobot.Report();
 
-            Assert.Equal(2, currentPosition.X);
-            Assert.Equal(3, currentPosition.Y);
-            Assert.Equal(Direction.EAST, currentPosition.F);
+            Assert.Equal(x, currentPosition.X);
+            Assert.Equal(y, currentPosition.Y);
+            Assert.Equal(expectedDirection, currentPosition.F);
         }
 
         #endregion
